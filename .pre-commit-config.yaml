@@ -1,0 +1,31 @@
+repos:
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.8.0   # `pre-commit autoupdate`
+    hooks:
+      - id: ruff
+        args: [--fix]
+        files: ^backend/
+      - id: ruff-format
+        files: ^backend/
+
+  - repo: local
+    hooks:
+      - id: mypy
+        name: mypy
+        entry: bash -c 'cd backend && mypy app'
+        language: system
+        pass_filenames: false
+        files: ^backend/
+
+      - id: eslint
+        name: eslint
+        entry: npm --prefix frontend run lint
+        language: system
+        pass_filenames: false
+        files: ^frontend/
+
+      - id: cspell
+        name: cspell
+        entry: npx cspell --no-must-find-files
+        language: system
+        types_or: [python, javascript, vue, markdown]
