@@ -1,9 +1,7 @@
+import httpx
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import JSONResponse
-from pydantic import BaseModel
-import httpx
-import json
+from typing import Any
 
 app = FastAPI()
 
@@ -17,12 +15,12 @@ app.add_middleware(
 
 
 @app.get("/api/helloworld")
-def hello():
+def hello() -> dict[str, str]:
     return {"message": "Hello World"}
 
 
 @app.get("/api/servers/{link}")
-async def getserverinfo(link:str):
+async def getserverinfo(link: str) -> Any:
     async with httpx.AsyncClient() as client:
         response = await client.get(f"https://api.mcsrvstat.us/3/{link}")
 

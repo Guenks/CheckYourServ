@@ -17,7 +17,7 @@ async function checkServer() {
   try {
     // encodeURIComponent to protect from ipv6 (with :)
     const res = await fetch(`/api/servers/${encodeURIComponent(value)}`)
-    if (!res.ok) throw new Error(`Erreur ${res.status}`)
+    if (!res.ok) throw new Error(`Error ${res.status}`)
     result.value = await res.json()
   } catch (e) {
     error.value = e.message
