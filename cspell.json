@@ -1,0 +1,17 @@
+{
+  "version": "0.2",
+  "language": "en",
+  "ignorePaths": [
+    "*.svg",
+    "*.json",
+    "*.png",
+    "*.yaml",
+    "*.pdf",
+    "*.html",
+    ".vscode/*",
+    "__pycache__/",
+    "dist/",
+    "node_modules/"
+  ],
+  "words": ["fastapi", "pydantic", "uvicorn", "vite","getserverinfo","venv","checkyourserv","serv"]
+}

@@ -1,0 +1,18 @@
+[tool.ruff]
+line-length = 100
+target-version = "py315"
+
+[tool.ruff.lint]
+select = [
+    "E", "W",   # pycodestyle
+    "F",        # pyflakes
+    "I",        # imports sort
+    "UP",       # modern Python syntax
+    "B",        # bugbear
+    "N",        # namming convention
+    "RUF",      # Ruff rules
+]
+
+[tool.mypy]
+strict = true
+plugins = ["pydantic.mypy"]
