@@ -1,13 +1,12 @@
 {
   "name": "checkyourserv",
-  "version": "0.1.0",
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "../node_modules/.bin/vite",
-    "build": "../node_modules/.bin/vite build",
-    "preview": "../node_modules/.bin/vite preview",
-    "test:unit": "../node_modules/.bin/vitest",
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "test:unit": "vitest",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "format": "prettier --write src/"
