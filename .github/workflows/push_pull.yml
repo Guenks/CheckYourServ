@@ -1,4 +1,5 @@
-name: push_pull.yml
+name: push_pull
+
 on:
   push:
     branches: [main]
