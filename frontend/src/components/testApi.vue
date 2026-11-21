@@ -1,9 +1,9 @@
 <script setup>
-import { ref } from 'vue'
+import { ref } from "vue"
 
-const target = ref('')
+const target = ref("")
 const result = ref(null)
-const error = ref('')
+const error = ref("")
 const loading = ref(false)
 
 async function checkServer() {
@@ -11,7 +11,7 @@ async function checkServer() {
   if (!value) return
 
   loading.value = true
-  error.value = ''
+  error.value = ""
   result.value = null
 
   try {
@@ -33,13 +33,13 @@ async function checkServer() {
 
     <form @submit.prevent="checkServer">
       <input
-          v-model="target"
-          type="text"
-          placeholder="DNS or IP (ex. example.com, 192.168.1.10)"
-          required
+        v-model="target"
+        type="text"
+        placeholder="DNS or IP (ex. example.com, 192.168.1.10)"
+        required
       />
       <button type="submit" :disabled="loading || !target.trim()">
-        {{ loading ? 'Checking...' : 'Check' }}
+        {{ loading ? "Checking..." : "Check" }}
       </button>
     </form>
 

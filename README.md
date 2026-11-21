@@ -34,9 +34,9 @@ mypy *.py            #check static types
 - prettier
 
 ```bash
-vite lint   # check errors
-vite lint:fix #correct
-vite format # format with prettier
+npm run lint   # check errors
+npm run lint:fix #correct
+npm run format # format with prettier
 ```
 
 
