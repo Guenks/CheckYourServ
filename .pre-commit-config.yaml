@@ -6,7 +6,7 @@ repos:
         name: mypy
         files: ^backend/
         args: [ --config-file=backend/pyproject.toml ]
-        additional_dependencies: [ pydantic, fastapi, bcrypt, jwt, httpx ]
+        additional_dependencies: [ pydantic, fastapi, bcrypt, pyjwt, httpx ]
 
 
   - repo: https://github.com/astral-sh/ruff-pre-commit
