@@ -8,6 +8,7 @@ import TestApi from "@/components/testApi.vue"
     Visit <a href="https://vuejs.org/" target="_blank" rel="noopener">vuejs.org</a> to read the
     documentation
   </p>
+  <RouterLink to="/auth">Log in / Register</RouterLink>
   <TestApi />
 </template>
 
