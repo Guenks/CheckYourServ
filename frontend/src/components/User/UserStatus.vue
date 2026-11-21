@@ -1,4 +1,4 @@
-<script>
+<script setup>
 import { onMounted, ref } from "vue"
 
 const user = ref(null)

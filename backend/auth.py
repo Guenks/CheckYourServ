@@ -1,7 +1,7 @@
 import sqlite3
 from collections.abc import Iterator
 from datetime import UTC, datetime, timedelta
-from typing import Annotated
+from typing import Annotated, Any
 
 import bcrypt
 import jwt
@@ -37,10 +37,15 @@ with sqlite3.connect("app.db") as conn:
     )
 
 
-# def for python code
+# class for python code
 class Credentials(BaseModel):
     username: str = Field(min_length=6, max_length=50)
     password: str = Field(min_length=6, max_length=70)
+
+
+class UserOut(BaseModel):
+    id: int
+    username: str
 
 
 # token to identify easier the user connected
@@ -54,13 +59,13 @@ DB = Annotated[sqlite3.Connection, Depends(get_db)]
 Creds = Annotated[HTTPAuthorizationCredentials, Depends(security)]
 
 
-def get_current_user(db: DB, creds: Creds) -> sqlite3.Cursor:
+def get_current_user(db: DB, creds: Creds) -> sqlite3.Cursor | Any:
     try:
         payload = jwt.decode(creds.credentials, DB_KEY, algorithms=[ALGORITHM])
         user_id = int(payload["sub"])
     except (jwt.InvalidTokenError, KeyError, ValueError):
         raise HTTPException(status_code=401, detail="Invalid or expired token") from None
-    user = db.execute("SELECT id, username FROM users WHERE id = ?", (user_id,))
+    user = db.execute("SELECT id, username FROM users WHERE id = ?", (user_id,)).fetchone()
     if not user:
         raise HTTPException(status_code=401, detail="User not found")
     return user
@@ -94,6 +99,6 @@ def login(data: Credentials, db: DB) -> dict[str, str]:
     return {"access_token": create_token(user["id"]), "token_type": "bearer"}
 
 
-@router.get("/me")
-def me(user: CurrentUser) -> dict[str, str]:
+@router.get("/me", response_model=UserOut)
+def me(user: CurrentUser) -> dict[str, Any]:
     return {"id": user["id"], "username": user["username"]}
