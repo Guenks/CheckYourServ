@@ -1,4 +1,14 @@
 repos:
+  - repo: https://github.com/pre-commit/mirrors-mypy
+    rev: v1.13.0
+    hooks :
+      - id: mypy
+        name: mypy
+        files: ^backend/
+        args: [ --config-file=backend/pyproject.toml ]
+        additional_dependencies: [ pydantic, fastapi, bcrypt, jwt, httpx ]
+
+
   - repo: https://github.com/astral-sh/ruff-pre-commit
     rev: v0.8.0   # `pre-commit autoupdate`
     hooks:
@@ -8,15 +18,9 @@ repos:
       - id: ruff-format
         files: ^backend/
 
+
   - repo: local
     hooks:
-      - id: mypy
-        name: mypy
-        entry: bash -c 'cd backend && mypy app'
-        language: system
-        pass_filenames: false
-        files: ^backend/
-
       - id: eslint
         name: eslint
         entry: npm --prefix frontend run lint
