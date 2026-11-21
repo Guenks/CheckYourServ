@@ -16,3 +16,10 @@ select = [
 [tool.mypy]
 strict = true
 plugins = ["pydantic.mypy"]
+exclude = [
+    "^\\.venv/",
+    "^venv/",
+    "^build/",
+    "^dist/",
+    "/node_modules/",
+]
