@@ -10,6 +10,42 @@ const username = ref("")
 const password = ref("")
 const error = ref("")
 const loading = ref(false)
+
+//general function to login/register
+async function post(path) {
+  //request to backend
+  const res = await fetch(`/api/auth/${path}`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ username: username.value.trim(), password: password.value }),
+  })
+
+  //get data
+  const data = await res.json().catch(() => ({}))
+  if (!res.ok) {
+    //Error details are either just a string or a list of errors
+    throw new Error(typeof data.detail === "string" ? data.detail : `Error ${res.status}`)
+  }
+  return data
+}
+
+async function submit() {
+  loading.value = true
+  error.value = ""
+
+  try {
+    //if register, no more check needed, just try to create a user
+    if (mode.value === "register") await post("register")
+    //login (after register to connect the user if he just create his account)
+    const data = await post("login")
+    localStorage.setItem("token", data.access_token)
+    router.push("/")
+  } catch (e) {
+    error.value = e.message
+  } finally {
+    loading.value = false
+  }
+}
 </script>
 
 <template>

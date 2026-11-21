@@ -40,3 +40,6 @@ __screenshots__/
 
 #venv
 backend/venv
+
+#db backend
+backend/app.db
