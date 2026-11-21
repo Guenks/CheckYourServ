@@ -1,10 +1,7 @@
-from typing import Any
-
 import httpx
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-
-from auth import router as auth_router
+from typing import Any
 
 app = FastAPI()
 # other routes
