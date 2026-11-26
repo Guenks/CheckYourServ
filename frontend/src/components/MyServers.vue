@@ -37,6 +37,7 @@ async function api(path, options = {}) {
 async function loadServers() {
   try {
     servers.value = await api("")
+    await updateAll()
   } catch (e) {
     error.value = e.message
   }
@@ -57,6 +58,7 @@ async function addServer() {
     //add server in front-end list
     servers.value.push(create)
     //reset form
+    showForm.value = false
     name.value = ""
     address.value = ""
   } catch (e) {
@@ -116,8 +118,19 @@ function motdLines(id) {
   )
 }
 
+function toggleEdition() {
+  edition.value = edition.value === "java" ? "bedrock" : "java"
+}
+
+function closeForm() {
+  showForm.value = false
+  error.value = ""
+}
+
 onMounted(() => {
-  if (loggedIn) loadServers()
+  if (loggedIn) {
+    loadServers()
+  }
 })
 </script>
 
@@ -165,28 +178,42 @@ onMounted(() => {
 
     <p v-if="error" class="red center">{{ error }}</p>
 
-    <form v-if="showForm" class="form" @submit.prevent="addServer">
-      <input v-model="name" type="text" placeholder="Server name" required maxlength="50" />
-      <input
-        v-model="address"
-        type="text"
-        placeholder="DNS or IP (ex. example.com:25565)"
-        required
-      />
-      <select v-model="edition">
-        <option value="java">Java</option>
-        <option value="bedrock">Bedrock</option>
-      </select>
-      <button type="submit" :disabled="!name.trim() || !address.trim()">Done</button>
-    </form>
-
     <div class="bar">
-      <button type="button" @click="showForm = !showForm">
-        {{ showForm ? "Cancel" : "Add server" }}
-      </button>
+      <button type="button" @click="showForm = true">Add server</button>
       <button type="button" :disabled="updating || !servers.length" @click="updateAll">
         {{ updating ? "Updating..." : "Update status" }}
       </button>
+    </div>
+
+    <div v-if="showForm" class="mc-screen" @keydown.esc="closeForm">
+      <form class="mc-form" @submit.prevent="addServer">
+        <h2>Edit Server Info</h2>
+
+        <label class="mc-label" for="srv-name">Server Name</label>
+        <input
+          id="srv-name"
+          v-model="name"
+          type="text"
+          placeholder="Minecraft Server"
+          required
+          maxlength="50"
+          autofocus
+        />
+
+        <label class="mc-label" for="srv-address">Server Address</label>
+        <input id="srv-address" v-model="address" type="text" required />
+
+        <button type="button" @click="toggleEdition">
+          Edition: {{ edition === "java" ? "Java" : "Bedrock" }}
+        </button>
+
+        <div class="mc-gap" />
+
+        <p v-if="error" class="red center">{{ error }}</p>
+
+        <button type="submit" :disabled="!name.trim() || !address.trim()">Done</button>
+        <button type="button" @click="closeForm">Cancel</button>
+      </form>
     </div>
   </section>
 </template>

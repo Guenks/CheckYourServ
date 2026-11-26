@@ -82,3 +82,63 @@ pre {
     background: rgba(0, 0, 0, 0.65);
     border: 2px solid #000;
 }
+
+/* Orange focus ring, like the keyboard highlight in Minecraft */
+input:focus-visible,
+select:focus-visible,
+button:focus-visible {
+    outline: 3px solid #e8742a;
+    outline-offset: 2px;
+}
+
+/* Full-screen overlay for forms */
+.mc-screen {
+    position: fixed;
+    inset: 0;
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 2rem 1rem;
+    overflow-y: auto;
+    background: rgba(0, 0, 0, 0.8);
+}
+
+.mc-form {
+    width: min(100%, 420px);
+}
+
+/* Centers vertically, but falls back to top-aligned (and scrollable)
+   if the form is taller than the window */
+.mc-screen > .mc-form {
+    margin-block: auto;
+}
+
+.mc-form h2 {
+    margin: 0 0 2rem;
+    font-size: 1.1rem;
+    text-shadow: none;
+}
+
+.mc-label {
+    display: block;
+    margin: 0 0 0.2rem;
+    font-size: 0.85rem;
+    color: #a0a0a0;
+}
+
+.mc-form input {
+    display: block;
+    width: 100%;
+    margin-bottom: 1.1rem;
+}
+
+.mc-form button {
+    display: block;
+    width: 100%;
+    margin-bottom: 0.5rem;
+}
+
+.mc-gap {
+    height: 1.2rem;
+}
