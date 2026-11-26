@@ -1,6 +1,7 @@
 <script setup>
 import TestApi from "@/components/testApi.vue"
 import UserStatus from "@/components/User/UserStatus.vue"
+import MyServers from "@/components/MyServers.vue"
 </script>
 
 <template>
@@ -10,6 +11,7 @@ import UserStatus from "@/components/User/UserStatus.vue"
     documentation
   </p>
   <UserStatus />
+  <MyServers />
   <TestApi />
 </template>
 

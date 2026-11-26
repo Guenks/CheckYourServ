@@ -26,7 +26,7 @@ with sqlite3.connect("app.db") as conn:
             address TEXT NOT NULL,
             name TEXT NOT NULL,
             edition TEXT NOT NULL CHECK (edition IN ('java', 'bedrock')),
-            UNIQUE(user_id,address,edition),
+            UNIQUE(user_id,address,edition)
             )"""
     )
 
