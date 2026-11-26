@@ -5,10 +5,12 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from auth import router as auth_router
+from my_servers import router as servers_router
 
 app = FastAPI()
 # other routes
 app.include_router(auth_router)
+app.include_router(servers_router)
 
 # CORS (to debug with call in navigator)
 app.add_middleware(
