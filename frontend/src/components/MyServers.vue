@@ -187,7 +187,7 @@ onMounted(() => {
 
     <div v-if="showForm" class="mc-screen" @keydown.esc="closeForm">
       <form class="mc-form" @submit.prevent="addServer">
-        <h2>Edit Server Info</h2>
+        <h2>Add server</h2>
 
         <label class="mc-label" for="srv-name">Server Name</label>
         <input
@@ -324,18 +324,6 @@ onMounted(() => {
   min-width: 0;
   padding: 0 0.5rem;
   font-size: 18px;
-}
-
-.form {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-  margin-top: 0.75rem;
-  padding: 0.75rem;
-  background: rgba(0, 0, 0, 0.65);
-}
-.form input {
-  flex: 1 1 200px;
 }
 
 .bar {
