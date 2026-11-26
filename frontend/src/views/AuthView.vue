@@ -1,8 +1,11 @@
 <script setup>
 import { useRouter } from "vue-router"
 import { ref } from "vue"
+import { useAuth } from "@/composables/useAuth.js"
 
+// imported parts
 const router = useRouter()
+const { setToken } = useAuth()
 
 //vars
 const mode = ref("login") // 'login' | 'register'
@@ -22,6 +25,7 @@ async function post(path) {
 
   //get data
   const data = await res.json().catch(() => ({}))
+  console.log(data)
   if (!res.ok) {
     //Error details are either just a string or a list of errors
     throw new Error(typeof data.detail === "string" ? data.detail : `Error ${res.status}`)
@@ -38,7 +42,7 @@ async function submit() {
     if (mode.value === "register") await post("register")
     //login (after register to connect the user if he just create his account)
     const data = await post("login")
-    localStorage.setItem("token", data.access_token)
+    setToken(data.access_token)
     router.push("/")
   } catch (e) {
     error.value = e.message

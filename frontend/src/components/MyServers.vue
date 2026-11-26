@@ -1,8 +1,11 @@
 <script setup>
 import { onMounted, reactive, ref } from "vue"
+import { useAuth } from "@/composables/useAuth.js"
 
-const loggedIn = !!localStorage.getItem("token")
+//imported
+const { token, clearToken, loggedIn } = useAuth()
 
+//vars
 const servers = ref({})
 const statuses = reactive({}) // id server -> status JSON or error
 const checking = reactive({}) // id server -> true while loading
@@ -18,7 +21,7 @@ async function api(path, options = {}) {
     ...options,
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${localStorage.getItem("token")}`,
+      Authorization: `Bearer ${token.value}`,
     },
   })
   if (res.status === 204) return null
