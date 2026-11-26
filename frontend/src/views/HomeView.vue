@@ -2,17 +2,18 @@
 import TestApi from "@/components/testApi.vue"
 import UserStatus from "@/components/User/UserStatus.vue"
 import MyServers from "@/components/MyServers.vue"
+import { useAuth } from "@/composables/useAuth.js"
+
+const { loggedIn } = useAuth()
 </script>
 
 <template>
-  <h1>You did it!</h1>
-  <p>
-    Visit <a href="https://vuejs.org/" target="_blank" rel="noopener">vuejs.org</a> to read the
-    documentation
-  </p>
-  <UserStatus />
-  <MyServers />
-  <TestApi />
+  <main class="page">
+    <h1>CheckYourServ</h1>
+    <UserStatus />
+    <MyServers v-if="loggedIn" />
+    <TestApi v-else />
+  </main>
 </template>
 
 <style scoped></style>
