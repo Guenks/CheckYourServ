@@ -105,7 +105,8 @@ button:focus-visible {
 }
 
 .mc-form {
-    width: min(100%, 420px);
+    width: min(100%, 560px);
+    font-size : 1.6rem; /* everything scale from here */
 }
 
 /* Centers vertically, but falls back to top-aligned (and scrollable)
@@ -115,28 +116,31 @@ button:focus-visible {
 }
 
 .mc-form h2 {
-    margin: 0 0 2rem;
-    font-size: 1.1rem;
+    margin: 0 0 2.5rem;
+    font-size: 3rem;
     text-shadow: none;
 }
 
 .mc-label {
     display: block;
-    margin: 0 0 0.2rem;
-    font-size: 0.85rem;
+    margin: 0 0 0.3rem;
+    font-size: 2.5rem;
     color: #a0a0a0;
 }
 
 .mc-form input {
     display: block;
     width: 100%;
-    margin-bottom: 1.1rem;
+    margin-bottom: 1.4rem;
+    padding: 0.5rem 0.75rem;
+    border-width: 3px;
 }
 
 .mc-form button {
     display: block;
     width: 100%;
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.6rem;
+    padding: 0.5rem 1rem;
 }
 
 .mc-gap {
