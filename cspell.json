@@ -13,5 +13,5 @@
     "dist/",
     "node_modules/"
   ],
-  "words": ["fastapi", "pydantic", "uvicorn", "vite","getserverinfo","venv","checkyourserv","serv","creds","hashpw","gensalt","checkpw","mypy","mcserverstatus","mcsrvstat","lastrowid"]
+  "words": ["fastapi", "pydantic", "uvicorn", "vite","getserverinfo","venv","checkyourserv","serv","creds","hashpw","gensalt","checkpw","mypy","mcserverstatus","mcsrvstat","lastrowid","motd"]
 }
