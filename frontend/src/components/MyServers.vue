@@ -4,7 +4,7 @@ import DOMPurify from "dompurify"
 import { useAuth } from "@/composables/useAuth.js"
 
 //imported
-const { token, clearToken, loggedIn } = useAuth()
+const { token, loggedIn } = useAuth()
 
 //vars
 const servers = ref([])
