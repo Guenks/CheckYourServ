@@ -3,6 +3,7 @@ import { onMounted, reactive, ref } from "vue"
 import { useAuth } from "@/composables/useAuth.js"
 import DirectCheck from "@/components/DirectCheck.vue"
 import { motdLines } from "../utils/motd.js"
+import ServerDetails from "@/components/ServerDetails.vue"
 
 //imported
 const { token, loggedIn } = useAuth()
@@ -10,6 +11,7 @@ const { token, loggedIn } = useAuth()
 //vars
 const servers = ref([])
 const statuses = reactive({}) // id server -> status JSON or error
+const expanded = reactive({}) // id server -> true when dropdown is open
 const updating = ref(false)
 
 //form
@@ -77,6 +79,7 @@ async function removeServer(id) {
     //delete in frontend
     servers.value = servers.value.filter((s) => s.id !== id)
     delete statuses[id]
+    delete expanded[id]
   } catch (e) {
     error.value = e.message
   }
@@ -100,6 +103,10 @@ async function updateAll() {
 
 function getMotdLines(id) {
   return motdLines(statuses[id])
+}
+
+function toggleExpanded(id) {
+  expanded[id] = !expanded[id]
 }
 
 function state(id) {
@@ -137,38 +144,47 @@ onMounted(() => {
     <div class="list">
       <p v-if="!servers.length" class="gray center">No server saved yet.</p>
 
-      <div v-for="s in servers" :key="s.id" class="row">
-        <img v-if="iconOf(s.id)" class="icon" :src="iconOf(s.id)" alt="" />
-        <div v-else class="icon fallback">?</div>
+      <div v-for="s in servers" :key="s.id" class="item">
+        <div class="row" @click="toggleExpanded(s.id)" @keydown.enter="toggleExpanded(s.id)">
+          <img v-if="iconOf(s.id)" class="icon" :src="iconOf(s.id)" alt="" />
+          <div v-else class="icon fallback">?</div>
 
-        <div class="info">
-          <div>{{ s.name }}</div>
+          <div class="info">
+            <div>{{ s.name }}</div>
 
-          <template v-if="state(s.id) === 'online'">
-            <div v-for="(line, i) in getMotdLines(s.id)" :key="i" class="motd" v-html="line" />
-          </template>
+            <template v-if="state(s.id) === 'online'">
+              <div v-for="(line, i) in getMotdLines(s.id)" :key="i" class="motd" v-html="line" />
+            </template>
 
-          <template v-else-if="state(s.id) === 'offline'">
-            <div class="red">{{ statuses[s.id].error || "Can't reach server" }}</div>
-            <div class="dark">{{ s.address }}</div>
-          </template>
+            <template v-else-if="state(s.id) === 'offline'">
+              <div class="red">{{ statuses[s.id].error || "Can't reach server" }}</div>
+              <div class="dark">{{ s.address }}</div>
+            </template>
 
-          <div v-else class="gray">Pinging...</div>
+            <div v-else class="gray">Pinging...</div>
+          </div>
+
+          <div class="side">
+            <template v-if="state(s.id) === 'offline'">
+              <span class="red">✕</span>
+            </template>
+            <template v-else>
+              <span v-if="state(s.id) === 'online'" class="players">
+                {{ statuses[s.id].players?.online ?? 0 }}<span class="dark">/</span
+                >{{ statuses[s.id].players?.max ?? 0 }}
+              </span>
+              <span class="bars" :class="state(s.id)"><i /><i /><i /><i /><i /></span>
+            </template>
+            <button type="button" class="small" @click.stop="removeServer(s.id)">Delete</button>
+          </div>
         </div>
 
-        <div class="side">
-          <template v-if="state(s.id) === 'offline'">
-            <span class="red">✕</span>
-          </template>
-          <template v-else>
-            <span v-if="state(s.id) === 'online'" class="players">
-              {{ statuses[s.id].players?.online ?? 0 }}<span class="dark">/</span
-              >{{ statuses[s.id].players?.max ?? 0 }}
-            </span>
-            <span class="bars" :class="state(s.id)"><i /><i /><i /><i /><i /></span>
-          </template>
-          <button type="button" class="small" @click="removeServer(s.id)">Delete</button>
-        </div>
+        <ServerDetails
+          v-if="expanded[s.id]"
+          class="dropdown"
+          :status="statuses[s.id]"
+          :show-motd="false"
+        />
       </div>
     </div>
 
@@ -239,10 +255,12 @@ onMounted(() => {
 .row {
   display: grid;
   grid-template-columns: 64px 1fr auto;
+  align-items: start;
   gap: 10px;
   padding: 4px;
   line-height: 1.05;
   border: 2px solid transparent;
+  cursor: pointer;
 }
 
 .row:hover {
@@ -338,5 +356,10 @@ onMounted(() => {
   justify-content: center;
   gap: 0.5rem;
   margin-top: 0.75rem;
+}
+
+.dropdown {
+  margin: 0 4px 8px 78px; /* aligned under the name: 64px icon + gaps */
+  width: calc(100% - 82px);
 }
 </style>

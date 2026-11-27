@@ -66,6 +66,9 @@ const address = computed(() => {
 
 <style scoped>
 .details {
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
   padding: 0.5rem 0.75rem;
   text-align: left;
   background: rgba(0, 0, 0, 0.5);
