@@ -62,6 +62,8 @@ async function addServer() {
     })
     //add server in front-end list
     servers.value.push(create)
+    //check status for the new server
+    checkServer(create.id)
     //reset form
     showForm.value = false
     name.value = ""
@@ -117,8 +119,9 @@ function state(id) {
 
 function iconOf(id) {
   const icon = statuses[id]?.icon
+  console.log(id, typeof icon, icon?.slice(0, 30))
   //only accept PNG or data URI (Bedrock servers have no icon)
-  return typeof icon === "string" && icon.startsWith("data:image/png;base64,")
+  return typeof icon === "string" && icon.startsWith("data:image/png;base64,") ? icon : null
 }
 
 function toggleEdition() {
@@ -131,7 +134,7 @@ function closeForm() {
 }
 
 onMounted(() => {
-  if (loggedIn) {
+  if (loggedIn.value) {
     loadServers()
   }
 })
@@ -359,7 +362,7 @@ onMounted(() => {
 }
 
 .dropdown {
-  margin: 0 4px 8px 78px; /* aligned under the name: 64px icon + gaps */
+  margin: 0 4px 8px 80px;
   width: calc(100% - 82px);
 }
 </style>
