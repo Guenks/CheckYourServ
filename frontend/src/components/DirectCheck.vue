@@ -1,5 +1,6 @@
 <script setup>
 import { ref } from "vue"
+import ServerDetails from "@/components/ServerDetails.vue"
 
 const address = ref("")
 const edition = ref("java")
@@ -73,7 +74,7 @@ function cancel() {
       <button type="button" @click="cancel">Cancel</button>
 
       <p v-if="error" style="color: #ff5555; text-align: center">{{ error }}</p>
-      <pre v-if="result">{{ JSON.stringify(result, null, 2) }}</pre>
+      <ServerDetails v-if="result" :status="result" />
     </form>
   </section>
 </template>
