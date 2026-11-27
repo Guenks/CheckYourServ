@@ -2,6 +2,7 @@
 import { onMounted, reactive, ref } from "vue"
 import DOMPurify from "dompurify"
 import { useAuth } from "@/composables/useAuth.js"
+import DirectCheck from "@/components/DirectCheck.vue"
 
 //imported
 const { token, loggedIn } = useAuth()
@@ -17,6 +18,8 @@ const name = ref("")
 const address = ref("")
 const edition = ref("java")
 const error = ref("")
+
+const showDirectCheck = ref(false)
 
 async function api(path, options = {}) {
   const res = await fetch(`/api/my-servers${path}`, {
@@ -183,6 +186,7 @@ onMounted(() => {
       <button type="button" :disabled="updating || !servers.length" @click="updateAll">
         {{ updating ? "Updating..." : "Update status" }}
       </button>
+      <button type="button" @click="showDirectCheck = true">Direct check</button>
     </div>
 
     <div v-if="showForm" class="mc-screen" @keydown.esc="closeForm">
@@ -215,10 +219,19 @@ onMounted(() => {
         <button type="button" @click="closeForm">Cancel</button>
       </form>
     </div>
+
+    <div v-if="showDirectCheck" class="mc-screen" @keydown.esc="showDirectCheck = false">
+      <DirectCheck class="overlay-check" @close="showDirectCheck = false" />
+    </div>
   </section>
 </template>
 
 <style scoped>
+.overlay-check {
+  width: min(100%, 560px);
+  margin-block: auto; /* vertical centering, same trick as .mc-form */
+}
+
 .list {
   min-height: 220px;
   max-height: 60vh;

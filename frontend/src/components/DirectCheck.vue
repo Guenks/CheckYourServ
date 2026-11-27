@@ -7,6 +7,9 @@ const result = ref(null)
 const error = ref("")
 const loading = ref(false)
 
+//var if opened by MyServers.vue
+const emit = defineEmits(["close"])
+
 async function checkServer() {
   const value = address.value.trim()
   if (!value) return
@@ -37,6 +40,11 @@ function resetForm() {
   result.value = null
   error.value = ""
 }
+
+function cancel() {
+  resetForm()
+  emit("close") //only do something if another component is listening
+}
 </script>
 
 <template>
@@ -62,7 +70,7 @@ function resetForm() {
       <button type="submit" :disabled="loading || !address.trim()">
         {{ loading ? "Checking..." : "Check Server" }}
       </button>
-      <button type="button" @click="resetForm">Cancel</button>
+      <button type="button" @click="cancel">Cancel</button>
 
       <p v-if="error" style="color: #ff5555; text-align: center">{{ error }}</p>
       <pre v-if="result">{{ JSON.stringify(result, null, 2) }}</pre>
