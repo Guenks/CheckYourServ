@@ -1,16 +1,20 @@
 <script setup>
 import { onMounted, ref } from "vue"
+import { useAuth } from "@/composables/useAuth.js"
 
+//imported
+const { token, clearToken } = useAuth()
+
+//vars
 const user = ref(null)
 
 async function loadUser() {
   //to get the connected user, we check the token
-  const token = localStorage.getItem("token")
-  if (!token) return null
+  if (!token.value) return null
 
   try {
     const res = await fetch("/api/auth/me", {
-      headers: { Authorization: `Bearer ${token}` },
+      headers: { Authorization: `Bearer ${token.value}` },
     })
 
     if (!res.ok) throw new Error(`Error : ${res.status}`)
@@ -22,7 +26,7 @@ async function loadUser() {
 }
 
 function logout() {
-  localStorage.removeItem("token")
+  clearToken()
   user.value = null
 }
 

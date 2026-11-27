@@ -12,6 +12,8 @@
     "format": "prettier --write src/"
   },
   "dependencies": {
+    "@fontsource/vt323": "^5.3.0",
+    "dompurify": "^3.5.0",
     "vue": "^3.5.42",
     "vue-router": "^5.3.1"
   },
