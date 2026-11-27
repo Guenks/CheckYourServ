@@ -4,6 +4,7 @@ import { useAuth } from "@/composables/useAuth.js"
 import DirectCheck from "@/components/DirectCheck.vue"
 import { motdLines } from "../utils/motd.js"
 import ServerDetails from "@/components/ServerDetails.vue"
+import { iconOf } from "@/utils/icon.js"
 
 //imported
 const { token, loggedIn } = useAuth()
@@ -117,11 +118,8 @@ function state(id) {
   return st.online && !st.error ? "online" : "offline"
 }
 
-function iconOf(id) {
-  const icon = statuses[id]?.icon
-  console.log(id, typeof icon, icon?.slice(0, 30))
-  //only accept PNG or data URI (Bedrock servers have no icon)
-  return typeof icon === "string" && icon.startsWith("data:image/png;base64,") ? icon : null
+function getIcon(id) {
+  return iconOf(statuses[id])
 }
 
 function toggleEdition() {
@@ -149,7 +147,7 @@ onMounted(() => {
 
       <div v-for="s in servers" :key="s.id" class="item">
         <div class="row" @click="toggleExpanded(s.id)" @keydown.enter="toggleExpanded(s.id)">
-          <img v-if="iconOf(s.id)" class="icon" :src="iconOf(s.id)" alt="" />
+          <img v-if="getIcon(s.id)" class="icon" :src="getIcon(s.id)" alt="" />
           <div v-else class="icon fallback">?</div>
 
           <div class="info">

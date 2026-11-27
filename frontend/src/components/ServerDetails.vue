@@ -1,6 +1,7 @@
 <script setup>
 import { computed } from "vue"
 import { motdLines } from "@/utils/motd.js"
+import { iconOf } from "@/utils/icon.js"
 
 const props = defineProps({
   status: { type: Object, default: null },
@@ -10,12 +11,11 @@ const props = defineProps({
 const online = computed(() => !!props.status?.online && !props.status?.error)
 const lines = computed(() => motdLines(props.status))
 const players = computed(() => props.status?.players)
-const playerNames = computed(() => (players.value?.list ?? []).map((p) => p.name))
 
 const address = computed(() => {
   const s = props.status
   const host = s?.hostname || s?.ip
-  return host ? (s.port ? `${host}:${s.port}` : host) : null
+  return host ?? null
 })
 </script>
 <template>
@@ -29,6 +29,8 @@ const address = computed(() => {
 
       <template v-if="online">
         <div v-if="showMotd && lines.length" class="motd-box">
+          <img v-if="iconOf(status)" class="icon" :src="iconOf(status)" alt="" />
+          <div v-else class="icon fallback">?</div>
           <div v-for="(line, i) in lines" :key="i" class="motd" v-html="line" />
         </div>
 
@@ -44,7 +46,7 @@ const address = computed(() => {
             <dd>{{ status.software }}</dd>
           </template>
 
-          <template v-if="status.gamemode">
+          <template v-if="status.gamemode /*only for bedrock server*/">
             <dt>Gamemode</dt>
             <dd>{{ status.gamemode }}</dd>
           </template>
@@ -52,11 +54,6 @@ const address = computed(() => {
           <template v-if="address">
             <dt>Address</dt>
             <dd>{{ address }}</dd>
-          </template>
-
-          <template v-if="playerNames.length">
-            <dt>Online</dt>
-            <dd>{{ playerNames.join(", ") }}</dd>
           </template>
         </dl>
       </template>
