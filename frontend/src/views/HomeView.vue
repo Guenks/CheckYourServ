@@ -1,5 +1,5 @@
 <script setup>
-import TestApi from "@/components/testApi.vue"
+import DirectCheck from "@/components/DirectCheck.vue"
 import UserStatus from "@/components/User/UserStatus.vue"
 import MyServers from "@/components/MyServers.vue"
 import { useAuth } from "@/composables/useAuth.js"
@@ -12,7 +12,7 @@ const { loggedIn } = useAuth()
     <h1>CheckYourServ</h1>
     <UserStatus />
     <MyServers v-if="loggedIn" />
-    <TestApi v-else />
+    <DirectCheck v-else />
   </main>
 </template>
 
