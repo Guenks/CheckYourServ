@@ -1,10 +1,11 @@
-from typing import Any
+from typing import Annotated, Any, Literal
 
-import httpx
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from pydantic import Field
 
 from auth import router as auth_router
+from my_servers import ADDRESS_PATTERN, fetch_status
 from my_servers import router as servers_router
 
 app = FastAPI()
@@ -26,11 +27,9 @@ def hello() -> dict[str, str]:
     return {"message": "Hello World"}
 
 
-@app.get("/api/servers/{link}")
-async def getserverinfo(link: str) -> Any:
-    async with httpx.AsyncClient() as client:
-        response = await client.get(f"https://api.mcsrvstat.us/3/{link}")
-
-    response.raise_for_status()
-
-    return response.json()
+@app.get("/api/servers/{address}")
+def getserverinfo(
+    address: Annotated[str, Field(min_length=1, max_length=253, pattern=ADDRESS_PATTERN)],
+    edition: Literal["java", "bedrock"] = "java",
+) -> Any:
+    return fetch_status(address, edition)

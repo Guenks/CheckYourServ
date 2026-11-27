@@ -16,6 +16,9 @@ API_BASE = "https://api.mcsrvstat.us"
 # mcserverstatus ask for a descriptive User-Agent for API Call
 HEADERS = {"User-Agent": "CheckYourServ"}
 
+# Check url or IP pattern
+ADDRESS_PATTERN = r"^[A-Za-z0-9.:\-\[\]]+$"
+
 
 # Create table
 with sqlite3.connect("app.db") as conn:
@@ -38,7 +41,7 @@ with sqlite3.connect("app.db") as conn:
 class ServerIn(BaseModel):
     name: str = Field(min_length=1, max_length=50)
     # IP or DNS -> No "?" or "/" to not alter with the API call to mcserverstatus
-    address: Annotated[str, Field(min_length=1, max_length=253, pattern=r"^[A-Za-z0-9.:\-\[\]]+$")]
+    address: Annotated[str, Field(min_length=1, max_length=253, pattern=ADDRESS_PATTERN)]
     edition: Literal["java", "bedrock"] = "java"
 
 
