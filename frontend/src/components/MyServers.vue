@@ -1,8 +1,8 @@
 <script setup>
 import { onMounted, reactive, ref } from "vue"
-import DOMPurify from "dompurify"
 import { useAuth } from "@/composables/useAuth.js"
 import DirectCheck from "@/components/DirectCheck.vue"
+import { motdLines } from "../utils/motd.js"
 
 //imported
 const { token, loggedIn } = useAuth()
@@ -98,6 +98,10 @@ async function updateAll() {
 
 // helper for the template
 
+function getMotdLines(id) {
+  return motdLines(statuses[id])
+}
+
 function state(id) {
   const st = statuses[id]
   if (!st) return "pending"
@@ -108,17 +112,6 @@ function iconOf(id) {
   const icon = statuses[id]?.icon
   //only accept PNG or data URI (Bedrock servers have no icon)
   return typeof icon === "string" && icon.startsWith("data:image/png;base64,")
-}
-
-function motdLines(id) {
-  const lines = statuses[id]?.motd?.html ?? []
-  return lines.map((line) =>
-    //check and clean motd since they're in html
-    DOMPurify.sanitize(line, {
-      ALLOWED_TAGS: ["span", "b", "i", "u", "s", "em", "strong"],
-      ALLOWED_ATTR: ["style"],
-    }),
-  )
 }
 
 function toggleEdition() {
@@ -152,7 +145,7 @@ onMounted(() => {
           <div>{{ s.name }}</div>
 
           <template v-if="state(s.id) === 'online'">
-            <div v-for="(line, i) in motdLines(s.id)" :key="i" class="motd" v-html="line" />
+            <div v-for="(line, i) in getMotdLines(s.id)" :key="i" class="motd" v-html="line" />
           </template>
 
           <template v-else-if="state(s.id) === 'offline'">
